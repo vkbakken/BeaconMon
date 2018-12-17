@@ -17,6 +17,7 @@
     <string name="settings">Settings</string>
     <string name="countReading" >Count %1$,d</string>
     <string name="updated">updated</string>
+    <string name="name">BeaconMon</string>
 
 
     <string-array name="navigation_items_titles">

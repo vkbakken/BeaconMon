@@ -68,7 +68,7 @@ public class GraphActivity extends AppCompatActivity {
         data.setValueTextColor(Color.WHITE);
         temp1.setData(data);
 
-        mHandler.postDelayed(updater, GRAPH_UI_UPDATE_FREQ);
+        mHandler.post(updater);
     }
 
     private void updateUi() {
@@ -78,7 +78,6 @@ public class GraphActivity extends AppCompatActivity {
             ILineDataSet set = data.getDataSetByIndex(0);
 
             List<EddyStoneReading> measurements = EddyStoneReading.getForTag(id);
-            System.out.println(measurements.size());
 
             if (set != null) {
                 data.removeDataSet(0);
@@ -92,8 +91,6 @@ public class GraphActivity extends AppCompatActivity {
             }
 
             data.addDataSet(set);
-
-
             data.notifyDataChanged();
             temp1.notifyDataSetChanged();
 

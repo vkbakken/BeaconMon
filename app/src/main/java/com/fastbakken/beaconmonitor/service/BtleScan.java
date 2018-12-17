@@ -122,7 +122,6 @@ public class BtleScan extends Service {
         start();
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "Invoke background service onStartCommand method.", Toast.LENGTH_LONG).show();

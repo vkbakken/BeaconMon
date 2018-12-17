@@ -45,36 +45,11 @@ public class DeviceAdapter extends ArrayAdapter<EddyStoneDevice> {
 
         txtId.setText(tag.getDispayName());
 
-        int ballColorRes = (position % 2 == 0) ? R.color.main : R.color.mainLight;
-
-        ((ImageView)convertView.findViewById(R.id.row_main_letter))
-                .setImageBitmap(Helper.createBall((int)getContext().getResources().getDimension(R.dimen.letter_ball_radius),
-                        getContext().getResources().getColor(ballColorRes),
-                        Color.WHITE,
-                        txtId.getText().charAt(0) + ""));
-
         convertView.findViewById(R.id.row_main_root).setTag(tag);
 
         String updatedAt = getContext().getResources().getString(R.string.updated) + " " + Helper.strDescribingTimeSince(tag.updateAt);
 
         lastseen.setText(updatedAt);
-        AppCompatImageView bell = convertView.findViewById(R.id.bell);
-        int status = 1; //AlarmChecker.getStatus(tag);
-        switch (status) {
-            case -1:
-                bell.setVisibility(View.VISIBLE);
-                bell.setImageResource(R.drawable.ic_notifications_off_24px);
-                break;
-            case 0:
-                bell.setVisibility(View.VISIBLE);
-                bell.setImageResource(R.drawable.ic_notifications_on_24px);
-                break;
-            case 1:
-                bell.setImageResource(R.drawable.ic_notifications_active_24px);
-                bell.setVisibility(bell.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
-                break;
-        }
-        ImageViewCompat.setImageTintList(bell, ColorStateList.valueOf(getContext().getResources().getColor(R.color.main)));
 
         temp.setText(tag.getTemperatureString(getContext()));
         humid.setText(String.format(getContext().getString(R.string.humidity_reading), tag.humidity));

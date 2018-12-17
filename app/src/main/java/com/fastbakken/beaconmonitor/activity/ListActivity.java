@@ -35,7 +35,7 @@ public class ListActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1337;
     private static final int REQUEST_ENABLE_BT = 1338;
     private static final int IGNORE_BATTERY_OPTIMIZATION_REQUEST = 1339;
-    private static final int LIST_UI_UPDATE_FREQ = 5000;
+    private static final int LIST_UI_UPDATE_FREQ = 1000;
     private Button ctrl;
     private Handler mHandler = new Handler();
     private List<EddyStoneDevice> devices;
@@ -67,7 +67,9 @@ public class ListActivity extends AppCompatActivity {
                 ctrl.setBackgroundColor(Color.RED);
                 ctrl.setText(R.string.enable);
             } else {
+                BluetoothAdapter.getDefaultAdapter().disable();
                 ctrl.setText(R.string.scan);
+                BluetoothAdapter.getDefaultAdapter().enable();
             }
         }
 
@@ -105,13 +107,18 @@ public class ListActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("onItemClick" + position);
-
                 Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
                 intent.putExtra("device_id", adapter.getItem(position).id);
                 startActivity(intent);
             }
         });
+    }
+
+
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+        stopScan();
     }
 
     private void updateUi() {
@@ -130,13 +137,13 @@ public class ListActivity extends AppCompatActivity {
             Helper.sortTagsByRssi(devices);
         }
 
-        if (adapter != null)  adapter.notifyDataSetChanged();
+        if (adapter != null) adapter.notifyDataSetChanged();
     }
 
     private void startScan() {
         if (!isBtleServiceRunning(BtleScan.class)) {
             startService(new Intent(this, BtleScan.class));
-            mHandler.postDelayed(updater, LIST_UI_UPDATE_FREQ);
+            mHandler.post(updater);
         }
     }
 
